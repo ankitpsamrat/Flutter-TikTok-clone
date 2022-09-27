@@ -1,10 +1,29 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tiktok_clone/models/user_model.dart';
 
 class AuthController extends GetxController {
-  // user registration method
+  static AuthController instance = Get.find();
+  //
+  //   image picker method
+
+  File? proimg;
+  pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      proimg = File(image.path);
+      // return;
+      // final img = File(image!.path);
+      // this.proimg = img;
+    } else {}
+  }
+
+  //   user registration method
 
   Future<void> signUp(
     String username,
@@ -22,7 +41,24 @@ class AuthController extends GetxController {
           email: email,
           password: password,
         );
-        _uploadProPic(image);
+        String downloadUrl = await _uploadProPic(image);
+
+        MyUser user = MyUser(
+          name: username,
+          profilePhoto: downloadUrl,
+          email: email,
+          uid: credential.user!.uid,
+        );
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(user.toJson());
+      } else {
+        Get.snackbar(
+          'Unable to create an account',
+          'Please enter all required fields',
+        );
       }
     } catch (e) {
       // print(e);
