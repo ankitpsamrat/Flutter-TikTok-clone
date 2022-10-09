@@ -77,4 +77,19 @@ class AuthController extends GetxController {
     String imageDwnUrl = await snapshot.ref.getDownloadURL();
     return imageDwnUrl;
   }
+
+  // login method
+
+  void login(String email, String password) async {
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+      } else {
+        Get.snackbar('Error logging', 'Please enter currect details');
+      }
+    } catch (e) {
+      Get.snackbar('Error logging', e.toString());
+    }
+  }
 }

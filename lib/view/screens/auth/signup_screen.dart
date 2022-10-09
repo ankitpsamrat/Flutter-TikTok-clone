@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/controller/auth_controller.dart';
 import 'package:tiktok_clone/view/widgets/text_input.dart';
 
-class SignupScreen extends StatelessWidget {
-  SignupScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _setpasswordController = TextEditingController();
-  TextEditingController _confirmpasswordController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  //
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _setpasswordController = TextEditingController();
+  final TextEditingController _confirmpasswordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
